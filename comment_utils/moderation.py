@@ -262,14 +262,17 @@ class CommentModerator(object):
             if akismet_api.verify_key():
                 akismet_data = { 'comment_type': 'comment',
                                  'referrer': '',
-                                 'comment_author': comment.user_name,
-                                 'comment_author_url': comment.user_url,
-                                 'comment_author_email': comment.user_email,
+                                 'comment_author': smart_str(comment.user_name),
+                                 'comment_author_url': smart_str(comment.user_url),
+                                 'comment_author_email': smart_str(comment.user_email),
                                  'user_ip': comment.ip_address,
                                  'comment_content': comment.comment,
                                  'user_agent': '' }
-                if akismet_api.comment_check(smart_str(comment.comment), data=akismet_data, build_data=True):
-                    return True
+                try:
+                    if akismet_api.comment_check(smart_str(comment.comment), data=akismet_data, build_data=True):
+                        return True
+                except UnicodeEncodeError:
+                    raise 'tutaj'
             else:
                 try:
                     if not settings.AKISMET_DEBUG:
