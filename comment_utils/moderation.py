@@ -93,6 +93,11 @@ class NotModerated(Exception):
     """
     pass
 
+class AkismetInvalid(Exception):
+    """
+    Raised when Akismet moderation is on, but the API key is invalid.
+    """
+    pass
 
 class CommentModerator(object):
     """
@@ -245,6 +250,7 @@ class CommentModerator(object):
         non-public), ``False`` otherwise.
 
         """
+
         if self.auto_moderate_field and self.moderate_after:
             if self._get_delta(datetime.datetime.now(), getattr(content_object, self.auto_moderate_field)).days >= self.moderate_after:
                 return True
@@ -264,6 +270,12 @@ class CommentModerator(object):
                                  'user_agent': '' }
                 if akismet_api.comment_check(smart_str(comment.comment), data=akismet_data, build_data=True):
                     return True
+            else:
+                try:
+                    if not settings.AKISMET_DEBUG:
+                        raise AkismetInvalid
+                except AttributeError:
+                    raise AkismetInvalid
         return False
 
     def comments_open(self, obj):
