@@ -107,15 +107,15 @@ class CommentModerator(object):
     enable any of the available moderation options. Instead, subclass
     it and override attributes to enable different options::
 
-    ``akismet``
-        If ``True``, comments will be submitted to an Akismet spam
-        check and, if Akismet thinks they're spam, will have their
-        ``is_public`` field set to ``False`` before saving. If
+    ``akismet`` If ``True``, comments will be submitted to an Akismet
+        spam check and, if Akismet thinks they're spam, will have
+        their ``is_public`` field set to ``False`` before saving. If
         this is enabled, you will need to have the Python Akismet
         module installed, and you will need to add the setting
-        ``AKISMET_API_KEY`` to your Django settings file; the
-        value of this setting should be a valid Akismet API
-        key. Default value is ``False``.
+        ``AKISMET_API_KEY`` to your Django settings file; the value of
+        this setting should be a valid Akismet API key. Default value
+        is ``False``. Use the setting AKISMET_DEBUG if it is OK to
+        have an invalid Akismet API key for debugging purposes.
 
     ``auto_close_field``
         If this is set to the name of a ``DateField`` or
