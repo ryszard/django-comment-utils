@@ -266,7 +266,6 @@ class CommentModerator(object):
                                  'comment_author_url': smart_str(comment.user_url),
                                  'comment_author_email': smart_str(comment.user_email),
                                  'user_ip': comment.ip_address,
-                                 'comment_content': comment.comment,
                                  'user_agent': '' }
                 try:
                     if akismet_api.comment_check(smart_str(comment.comment), data=akismet_data, build_data=True):
